@@ -19,6 +19,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Server Name
+    |--------------------------------------------------------------------------
+    |
+    | This value is used to differentiate servers. You can set this value
+    | in the `.env` file to display a unique identifier for each instance.
+    |
+    */
+
+    'server_name' => env('APP_SERVER_NAME', 'Serveur par défaut'),
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |

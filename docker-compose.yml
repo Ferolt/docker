@@ -27,6 +27,7 @@ services:
       - DB_DATABASE=laravel
       - DB_USERNAME=laravel
       - DB_PASSWORD=laravel
+      - APP_SERVER_NAME=Serveur 1
     depends_on:
       - db
 
@@ -42,6 +43,7 @@ services:
       - DB_DATABASE=laravel
       - DB_USERNAME=laravel
       - DB_PASSWORD=laravel
+      - APP_SERVER_NAME=Serveur 2
     depends_on:
       - db
 

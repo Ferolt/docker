@@ -44,6 +44,8 @@
                         </g>
                     </svg>
                 </div>
+                <h1 class="text-center text-2xl font-bold">{{ config('app.server_name') }}</h1>
+<p class="text-center mt-2">Bienvenue sur notre application Laravel.</p>
 
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                     <div class="grid grid-cols-1 md:grid-cols-2">
