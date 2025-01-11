@@ -10,10 +10,10 @@ services:
       MYSQL_DATABASE: laravel
       MYSQL_USER: laravel
       MYSQL_PASSWORD: laravel
-    volumes:
-      - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
 
   php1:
     build:
@@ -38,6 +38,7 @@ services:
     container_name: php2
     volumes:
       - .:/var/www/html
+      - ./env/php2.env:/var/www/html/.env
     environment:
       - DB_HOST=db
       - DB_DATABASE=laravel

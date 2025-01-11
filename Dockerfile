@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     curl \
     nodejs \
-    npm
+    npm \
+    mariadb-client
 
 # Installer Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -14,19 +15,21 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Définir le dossier de travail
 WORKDIR /var/www/html
 
-# Copier le code Laravel
+# Copier les fichiers Laravel
 COPY . .
 
-# Installer les dépendances Laravel
-RUN composer install && npm install && npm run build
+# Ajouter le script wait-for-it
+COPY wait-for-it.sh /usr/bin/wait-for-it
+RUN chmod +x /usr/bin/wait-for-it
 
-# Automatiser les commandes artisan
-RUN php artisan key:generate && php artisan migrate:fresh --seed
+# Ajouter le script init
+COPY init.sh /usr/bin/init.sh
+RUN chmod +x /usr/bin/init.sh
 
-# Donner les droits nécessaires
-RUN chown -R www-data:www-data /var/www/html
+# Donner les permissions nécessaires
+RUN chmod -R 777 storage bootstrap/cache
 
 # Exposer le port
 EXPOSE 9000
 
-CMD ["php-fpm"]
+CMD ["/usr/bin/init.sh"]
