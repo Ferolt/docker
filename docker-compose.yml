@@ -4,25 +4,23 @@ services:
   db:
     image: mysql:8.0
     container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: laravel
-    ports:
-      - "3306:3306"
+    env_file:
+      - ./env/mysql.env
+    volumes:
+      - db_data:/var/lib/mysql
     networks:
       - app-network
+    ports:
+      - "3306:3306"
 
   php1:
     build:
       context: .
-      dockerfile: Dockerfile
     container_name: php1
+    env_file:
+      - ./env/php1.env
     volumes:
       - .:/var/www/html
-    environment:
-      LARAVEL_ENV: .env.php1
     depends_on:
       - db
     networks:
@@ -31,12 +29,11 @@ services:
   php2:
     build:
       context: .
-      dockerfile: Dockerfile
     container_name: php2
+    env_file:
+      - ./env/php2.env
     volumes:
       - .:/var/www/html
-    environment:
-      LARAVEL_ENV: .env.php2
     depends_on:
       - db
     networks:
@@ -67,6 +64,9 @@ services:
       - php2
     networks:
       - app-network
+
+volumes:
+  db_data:
 
 networks:
   app-network:
