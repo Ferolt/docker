@@ -1,37 +1,35 @@
 #!/bin/bash
 
-# Arrêter immédiatement le script en cas d'erreur
-set -e
+echo "Starting Laravel setup..."
 
-# Attendre que la base de données MySQL soit prête
-echo "Waiting for database connection..."
-while ! nc -z db 3306; do
-  sleep 1
-done
-echo "Database is ready!"
-
-# Installer les dépendances Composer si nécessaires
+# Vérifier et installer les dépendances si nécessaires
 if [ ! -d "vendor" ]; then
   echo "Installing Composer dependencies..."
-  composer install --no-progress --prefer-dist
+  composer install --no-dev --optimize-autoloader
 fi
 
-# Installer les dépendances Node.js si nécessaires
 if [ ! -d "node_modules" ]; then
   echo "Installing Node.js dependencies..."
-  npm install --legacy-peer-deps
+  npm install
   npm run build
 fi
 
-# Initialiser Laravel
-echo "Running Laravel setup..."
+# Copier .env si nécessaire
+if [ ! -f ".env" ]; then
+  echo "Creating .env file from .env.example..."
+  cp .env.example .env
+fi
+
+# Générer la clé d'application
 php artisan key:generate
-php artisan migrate:fresh --seed --force
 
-# Fixer les permissions pour les dossiers de stockage et cache
-echo "Setting permissions..."
-chmod -R 777 storage bootstrap/cache
+# Appliquer les migrations
+php artisan migrate:fresh --seed
 
-# Lancer PHP-FPM
-echo "Starting PHP-FPM..."
+# Fixer les permissions des dossiers
+chown -R www-data:www-data /var/www/html
+chmod -R 775 storage bootstrap/cache
+
+echo "Laravel setup completed!"
+
 exec "$@"
