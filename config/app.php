@@ -27,7 +27,7 @@ return [
     |
     */
 
-    'server_name' => env('APP_SERVER_NAME', 'Serveur par défaut'),
+    'server_name' => env('APP_SERVEUR_NAME', 'Serveur par défaut'),
 
 
     /*

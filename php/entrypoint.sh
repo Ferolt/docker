@@ -1,10 +1,6 @@
 #!/bin/bash
 set -e
-echo "Clearing laravel cache..."
-php artisan route:clear
-php artisan config:clear
-php artisan cache:clear
-php artisan optimize:clear
+
 
 echo "Starting setup for $PHP_HOTE..."
 
@@ -18,16 +14,23 @@ if [ "$PHP_HOTE" = "php1" ]; then
     composer install
     php artisan key:generate
     php artisan migrate --force
+    npm install
+    npm run build
     touch /var/www/html/composer_installed.lock
+
 elif [ "$PHP_HOTE" = "php2" ]; then
     # Configuration spécifique pour php2
     while [ ! -f /var/www/html/composer_installed.lock ]; do
         echo "Waiting for PHP1 to finish setup..."
         sleep 5
     done
-
     php artisan key:generate
     php artisan migrate --force
+    echo "Clearing laravel cache..."
+php artisan route:clear
+php artisan config:clear
+php artisan cache:clear
+php artisan optimize:clear
 fi
 
 exec php-fpm
