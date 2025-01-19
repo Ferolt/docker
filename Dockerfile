@@ -1,4 +1,3 @@
-# Utiliser une image de base PHP avec les extensions nécessaires déjà incluses
 FROM php:8.1-fpm-alpine
 
 # Définir le répertoire de travail

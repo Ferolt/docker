@@ -2,17 +2,10 @@
 
 echo "Starting Laravel setup..."
 
-# Vérifier et installer les dépendances si nécessaires
-if [ ! -d "vendor" ]; then
-  echo "Installing Composer dependencies..."
-  composer install --no-dev --optimize-autoloader
-fi
-
-if [ ! -d "node_modules" ]; then
-  echo "Installing Node.js dependencies..."
-  npm install
-  npm run build
-fi
+# Installer les dépendances Composer et NPM
+composer install --no-interaction --prefer-dist
+npm install
+npm run build
 
 # Copier .env si nécessaire
 if [ ! -f ".env" ]; then
